@@ -30,7 +30,7 @@ The **Recipe Finder App** is a user-friendly Android application that allows use
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/arcreane/introduction-to-android-team-stark.git
+   https://github.com/sathyagnanou/Recipe-Finder-App.git
    ```
 2. Open the project in **Android Studio**.
 3. Sync the Gradle files to install dependencies.
