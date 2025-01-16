@@ -55,5 +55,16 @@ The **Recipe Finder App** is a user-friendly Android application that allows use
 3. **Capture a Photo**:
    - On the recipe detail page, tap "Take Photo" to capture and save an image.
    - The photo will appear under the recipe details.
+  
+## Screenshots
+
+### Main Screen
+<img src="img/main.png" alt="Main Screen" width="300" />
+
+### Recipe List Item
+<img src="img/item.png" alt="Recipe List Item" width="300" />
+
+### Recipe Detail Screen
+<img src="img/detail.png" alt="Recipe Detail Screen" width="300" />
 
 ---
