@@ -1,6 +1,10 @@
 package com.example.recipefinderapp
 
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -12,19 +16,27 @@ import retrofit2.Response
 
 class RecipeDetailActivity : AppCompatActivity() {
 
+    private lateinit var photoView: ImageView
+    private val REQUEST_IMAGE_CAPTURE = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_detail)
 
         val recipeId = intent.getIntExtra("RECIPE_ID", -1)
-        val title = intent.getStringExtra("RECIPE_TITLE")
-        val image = intent.getStringExtra("RECIPE_IMAGE")
-
 
         if (recipeId != -1) {
             fetchRecipeDetails(recipeId)
         } else {
             Toast.makeText(this, "Recipe details not available!", Toast.LENGTH_SHORT).show()
+        }
+
+        // Set up the photo functionality
+        val btnTakePhoto: Button = findViewById(R.id.btnTakePhoto)
+        photoView = findViewById(R.id.photoView)
+
+        btnTakePhoto.setOnClickListener {
+            openCamera()
         }
     }
 
@@ -57,5 +69,23 @@ class RecipeDetailActivity : AppCompatActivity() {
         titleView.text = recipe.title
         instructionsView.text = recipe.instructions
         Glide.with(this).load(recipe.image).into(imageView)
+    }
+
+    private fun openCamera() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+        } else {
+            Toast.makeText(this, "Camera not available!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            photoView.setImageBitmap(imageBitmap)
+            photoView.visibility = ImageView.VISIBLE
+        }
     }
 }
