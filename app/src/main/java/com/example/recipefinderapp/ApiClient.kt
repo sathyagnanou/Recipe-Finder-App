@@ -10,13 +10,13 @@ object ApiClient {
     private const val BASE_URL = "https://api.spoonacular.com/"
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY // Logs the body of the response
+        level = HttpLoggingInterceptor.Level.BODY
     }
 
     private val client = OkHttpClient.Builder()
-        .addInterceptor(loggingInterceptor) // Add logging to OkHttp
-        .connectTimeout(30, TimeUnit.SECONDS) // Optional: Set connection timeout
-        .readTimeout(30, TimeUnit.SECONDS)   // Optional: Set read timeout
+        .addInterceptor(loggingInterceptor)
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
         .build()
 
     val instance: RecipeApi by lazy {

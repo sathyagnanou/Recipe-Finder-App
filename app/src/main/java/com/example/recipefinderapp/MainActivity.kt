@@ -22,15 +22,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Bind views
         etIngredients = findViewById(R.id.etIngredients)
         btnFetchRecipes = findViewById(R.id.btnFetchRecipes)
         rvRecipes = findViewById(R.id.rvRecipes)
 
-        // Set RecyclerView Layout Manager
         rvRecipes.layoutManager = LinearLayoutManager(this)
 
-        // Button click listener
         btnFetchRecipes.setOnClickListener {
             val ingredients = etIngredients.text.toString().trim()
             if (ingredients.isNotEmpty()) {
@@ -44,14 +41,12 @@ class MainActivity : AppCompatActivity() {
     private fun fetchRecipes(ingredients: String) {
         val apiKey = "695c1b234a1944fdbfbf8779cf52c04f"
 
-        // Make API call using Retrofit
         ApiClient.instance.getRecipes(ingredients, apiKey = apiKey)
             .enqueue(object : Callback<List<Recipe>> {
                 override fun onResponse(call: Call<List<Recipe>>, response: Response<List<Recipe>>) {
                     if (response.isSuccessful) {
                         val recipes = response.body() ?: emptyList()
                         if (recipes.isNotEmpty()) {
-                            // Set the adapter with click listener
                             rvRecipes.adapter = RecipeAdapter(recipes) { recipe ->
                                 navigateToRecipeDetail(recipe)
                             }
@@ -65,16 +60,16 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<List<Recipe>>, t: Throwable) {
                     Toast.makeText(this@MainActivity, "Failed to fetch data: ${t.message}", Toast.LENGTH_LONG).show()
-                    t.printStackTrace()
                 }
             })
     }
 
     private fun navigateToRecipeDetail(recipe: Recipe) {
-        // Navigate to RecipeDetailActivity
         val intent = Intent(this, RecipeDetailActivity::class.java).apply {
-            putExtra("RECIPE_TITLE", recipe.title)
-            putExtra("RECIPE_IMAGE", recipe.image)
+            putExtra("RECIPE_ID", recipe.id)
+            putExtra("RECIPE_TITLE", recipe.title) // Key must match
+            putExtra("RECIPE_IMAGE", recipe.image) // Key must match
+
         }
         startActivity(intent)
     }
